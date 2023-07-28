@@ -1,4 +1,4 @@
-// ToDoItem.jsx
+// ToDoList.jsx
 import React from 'react';
 import ToDoItem from './ToDoItem';
 
@@ -22,6 +22,23 @@ class ToDoList extends React.Component {
       currentItem: '',
     }));
   }
+
+  updateItem = (index, newItem) => {
+    const { items } = this.state;
+    let newItems = [...items];
+    newItems[index] = newItem;
+    this.setState({
+      items: newItems,
+    });
+  }
+
+  deleteItem = (index) => {
+    const { items } = this.state;
+    this.setState({
+      items: items.filter((item, itemIndex) => itemIndex !== index),
+    });
+  }
+
   render() {
     return (
       <div>
@@ -30,11 +47,17 @@ class ToDoList extends React.Component {
         <button onClick={this.addItem}>Add Item</button>
         <ul>
           {this.state.items.map((item, index) => (
-            <ToDoItem key={index} item={item} />
+            <ToDoItem 
+              key={index} 
+              item={item} 
+              deleteItem={() => this.deleteItem(index)} 
+              updateItem={this.updateItem.bind(this, index)} 
+            />
           ))}
         </ul>
       </div>
     );
   }
 }
+
 export default ToDoList;
